@@ -9,5 +9,16 @@
 </head>
 <body>
   <app-root></app-root>
+
+    <script>
+    // Handle GitHub Pages routing
+    (function() {
+      var redirect = sessionStorage.redirect;
+      delete sessionStorage.redirect;
+      if (redirect && redirect != location.pathname) {
+        history.replaceState(null, null, redirect);
+      }
+    })();
+  </script>
 </body>
 </html>
