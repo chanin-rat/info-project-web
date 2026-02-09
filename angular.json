@@ -44,8 +44,8 @@
                 }
               ],
               "outputHashing": "all",
-              "baseHref": "/info-project/",  
-              "deployUrl": "/info-project/" 
+              "baseHref": "/info-project-web/",  
+              "deployUrl": "/info-project-web/" 
             },
             "development": {
               "optimization": false,
