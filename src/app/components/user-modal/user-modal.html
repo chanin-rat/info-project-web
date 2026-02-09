@@ -1,0 +1,108 @@
+<div class="user-modal">
+  <div class="modal-header">
+    <h2>{{ formTitle }}</h2>
+    <button class="btn-close" (click)="onClose()">×</button>
+  </div>
+
+
+  <form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="modal-form">
+    <div class="form-row">
+      <div class="form-group">
+        <label for="firstName">ชื่อ-สกุล</label>
+        <input 
+          type="text" 
+          id="firstName" 
+          formControlName="firstName"
+          [class.error]="hasError('firstName', 'required') || hasError('firstName', 'minlength')"
+          [readonly]="isViewMode"
+          placeholder="ชื่อ">
+        <div class="error-message" *ngIf="hasError('firstName', 'required')">
+          ต้องใส่ข้อมูลชื่อ
+        </div>
+        <div class="error-message" *ngIf="hasError('firstName', 'minlength')">
+          ข้อมูลชื่อต้องอย่างน้อย 2 ตัวอักษร
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="lastName">&nbsp;</label>
+        <input 
+          type="text" 
+          id="lastName" 
+          formControlName="lastName"
+          [class.error]="hasError('lastName', 'required') || hasError('lastName', 'minlength')"
+          [readonly]="isViewMode"
+          placeholder="นามสกุล">
+        <div class="error-message" *ngIf="hasError('lastName', 'required')">
+          ต้องใส่ข้อมูลนามสกุล
+        </div>
+        <div class="error-message" *ngIf="hasError('lastName', 'minlength')">
+          ข้อมูลนามสกุลต้องอย่างน้อย 2 ตัวอักษร
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="birthDate">วันเกิด</label>
+      <input 
+        type="date" 
+        id="birthDate" 
+        formControlName="birthDate"
+        [max]="maxDate"
+        [class.error]="hasError('birthDate', 'required')"
+        [readonly]="isViewMode">
+      <div class="error-message" *ngIf="hasError('birthDate', 'required')">
+        ต้องใส่ข้อมูลวันเกิด
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>อายุ</label>
+      
+      <!-- ใน view mode -->
+      <div *ngIf="isViewMode" class="readonly-field">
+        {{ (calculatedAge$ | async) !== null ? (calculatedAge$ | async) + ' ปี' : 'ไม่ทราบ' }}
+      </div>
+      
+      <!-- ใน add/edit mode -->
+      <div *ngIf="!isViewMode" class="calculated-age">
+        <div class="age-display">
+          {{ (calculatedAge$ | async) !== null ? (calculatedAge$ | async) + ' ปี' : 'กรุณาระบุวันเกิดเพื่อคำนวณอายุ' }}
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="address">ที่อยู่</label>
+      <textarea 
+        id="address" 
+        formControlName="address"
+        [class.error]="hasError('address', 'required') || hasError('address', 'minlength')"
+        [readonly]="isViewMode"
+        rows="3"></textarea>
+      <div class="error-message" *ngIf="hasError('address', 'required')">
+        ต้องใส่ข้อมูลที่อยู่
+      </div>
+      <div class="error-message" *ngIf="hasError('address', 'minlength')">
+        ข้อมูลที่อยู่ต้องอย่างน้อย 5 ตัวอักษร
+      </div>
+    </div>
+    
+    <div class="form-actions">
+      <button 
+        *ngIf="!isViewMode"
+        type="submit" 
+        class="btn-save"
+        [disabled]="userForm.invalid || (calculatedAge$ | async) === null">
+        บันทึก
+      </button>
+      
+      <button 
+        type="button" 
+        class="btn-cancel" 
+        (click)="onClose()">
+        {{ isViewMode ? 'ปิด' : 'ยกเลิก' }}
+      </button>
+    </div>
+  </form>
+</div>

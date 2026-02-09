@@ -1,0 +1,52 @@
+<div class="user-list-container">
+  <div class="header">
+    <h1>User</h1>
+    <button class="btn-add" (click)="openAddModal()">
+      <span>Add</span>
+    </button>
+  </div>
+
+  <div class="table-container">
+    <table class="user-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>ชื่อ-สกุล</th>
+          <th>ที่อยู่</th>
+          <th>วันเกิด</th>
+          <th>อายุ</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users">
+          <td>{{ user.id }}</td>
+          <td>{{ user.firstName }} {{ user.lastName }}</td>
+          <td>{{ user.address }}</td>
+          <td>{{ user.birthDate ? (user.birthDate | date:'dd/MM/yyyy') : '-' }}</td>
+          <td>{{ user.age }}</td>
+          <td>
+            <button class="btn-view" (click)="openViewModal(user.id)">
+              View
+            </button>
+          </td>
+        </tr>
+        <tr *ngIf="users.length === 0">
+          <td colspan="7" class="no-data">No users found</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Modal Container -->
+  <div class="modal-overlay" *ngIf="isModalOpen">
+    <div class="modal-container">
+      <app-user-modal 
+        [userId]="selectedUserId"
+        [mode]="modalMode"
+        (close)="closeModal()"
+        (userSaved)="handleUserSaved($event)">
+      </app-user-modal>
+    </div>
+  </div>
+</div>
